@@ -1,0 +1,270 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "v1.0.0",
+    "title": "Bookshop API",
+    "description": ""
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api",
+      "description": ""
+    }
+  ],
+  "paths": {
+    "/customer/update-points": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "customerId": {
+                    "example": "any"
+                  },
+                  "points": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/book/": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Some summary...",
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/book/{id}/detail": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Some summary...",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/book/{tagId}/tag": {
+      "get": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Some summary...",
+        "description": "",
+        "parameters": [
+          {
+            "name": "tagId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/book/filter": {
+      "post": {
+        "tags": [
+          "books"
+        ],
+        "summary": "Some summary...",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "example": "any"
+                  },
+                  "keyword": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order": {
+      "post": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "create customer order",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/orderSchema"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/order/{customerId}/customer": {
+      "get": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "get orders by customer id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Some description..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/order/{orderId}/cancel": {
+      "post": {
+        "tags": [
+          "orders"
+        ],
+        "summary": "cancel orders",
+        "description": "",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Some description..."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "orderSchema": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "example": "c0bbf765-0157-4575-a2db-dc60e179688b"
+          },
+          "books": {
+            "type": "array",
+            "example": [
+              "02495b21-5ffd-42b2-abab-772742e20ac3"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "customerId",
+          "books"
+        ]
+      },
+      "getOrdersSchema": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "example": "c0bbf765-0157-4575-a2db-dc60e179688b"
+          }
+        },
+        "required": [
+          "customerId"
+        ]
+      }
+    }
+  }
+}
