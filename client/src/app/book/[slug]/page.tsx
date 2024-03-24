@@ -10,7 +10,6 @@ import { useSelector, useDispatch } from "@/hooks";
 import {
   userSelector,
   setOpenLoginModal,
-  openLoginModal,
   login,
   addPoints,
 } from "@/slices/user";

@@ -82,8 +82,8 @@ const Navbar = () => {
 const UserAvatar = () => {
   const user = useSelector(userSelector);
   return (
-    <DropdownMenu className="cursor-pointer">
-      <DropdownMenuTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild className="cursor-pointer">
         <Avatar className="h-9 w-9 cursor-pointer">
           <AvatarImage
             alt="Shadcn's avatar"
@@ -95,7 +95,7 @@ const UserAvatar = () => {
       <DropdownMenuContent className="w-44 px-4 py-2 mt-2">
         <DropdownMenuGroup>
           <DropdownMenuItem className="flex flex-col justify-start items-start">
-            <p className="text-xs text-black">you're logged in as</p>
+            <p className="text-xs text-black">you&apos;re logged in as</p>
             <span className="font-bold font-poppins">Denny</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
