@@ -7,8 +7,9 @@
     "dev": "nodemon src/app.ts",
     "seed": "ts-node src/config/seeders/seed.ts",
     "client": "npm start --prefix ../client",
-    "both2": "concurrently \"npm run dev\" \"npm run client\"",
-    "both": "concurrently \"npm run dev\" \"cd ../client && npm run dev\""
+    "both": "concurrently \"npm run dev\" \"cd ../client && npm run dev\"",
+    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
+    "start": "node dist/app.js"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
     "swagger-ui-express": "^5.0.0",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "tscpaths": "^0.0.9",
     "typescript": "^5.4.3"
   },
   "dependencies": {
