@@ -1,4 +1,4 @@
-import { dataSource } from "@/config/database";
+import { dataSource } from "../config/database";
 import { Book } from "../entities/book";
 
 export const BookRepo = dataSource.getRepository(Book).extend({

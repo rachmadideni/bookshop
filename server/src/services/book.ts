@@ -1,5 +1,5 @@
 import { ILike } from "typeorm";
-import { BookRepo } from "@/repositories/book";
+import { BookRepo } from "../repositories/book";
 
 const getBooks = async (page: string, limit: string) => {
   return await BookRepo.find({

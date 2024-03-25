@@ -1,8 +1,8 @@
 import { DataSource } from "typeorm";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
-import { Book } from "@/entities/book";
-import { Customer } from "@/entities/customer";
-import { Tag } from "@/entities/tag";
+import { Book } from "../../entities/book";
+import { Customer } from "../../entities/customer";
+import { Tag } from "../../entities/tag";
 
 const getRandomTags = (tags: Tag[]): Tag[] => {
   const numTags = Math.floor(Math.random() * tags.length) + 1;

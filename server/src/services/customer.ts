@@ -1,5 +1,5 @@
-import { CustomerRepo } from "@/repositories/customer";
-import { NotFoundError } from "@/utils/api-error";
+import { CustomerRepo } from "../repositories/customer";
+import { NotFoundError } from "../utils/api-error";
 
 const getCustomers = async () => {
   return await CustomerRepo.find();

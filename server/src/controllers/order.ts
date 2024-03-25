@@ -1,13 +1,13 @@
 import * as express from "express";
 import { StatusCodes } from "http-status-codes";
-import { NotFoundError } from "@/utils/api-error";
+import { NotFoundError } from "../utils/api-error";
 import {
   getCustomerOrdersService,
   createOrderService,
   cancelOrderService,
-} from "@/services/order";
-import RequestValidator from "@/utils/request-validator";
-import { CreateOrderDto, CustomerOrderDto } from "@/dto/order.dto";
+} from "../services/order";
+import RequestValidator from "../utils/request-validator";
+import { CreateOrderDto, CustomerOrderDto } from "../dto/order.dto";
 
 const router = express.Router();
 

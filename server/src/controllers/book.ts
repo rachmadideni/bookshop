@@ -4,7 +4,7 @@ import {
   getBookById,
   getBooksByTagId,
   getBooksByCategory,
-} from "@/services/book";
+} from "../services/book";
 
 interface ReqQuery {
   page: string;

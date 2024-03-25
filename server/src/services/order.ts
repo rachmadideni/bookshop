@@ -1,11 +1,11 @@
-import { OrderRepo } from "@/repositories/order";
-import { OrderDetailsRepo } from "@/repositories/orderDetails";
-import { CustomerRepo } from "@/repositories/customer";
-import { BookRepo } from "@/repositories/book";
-import { CreateOrderDto } from "@/dto/order.dto";
-import { NotFoundError } from "@/utils/api-error";
-import { OrderDetails } from "@/entities/orderDetails";
-import { OrderStatus } from "@/entities/order";
+import { OrderRepo } from "../repositories/order";
+import { OrderDetailsRepo } from "../repositories/orderDetails";
+import { CustomerRepo } from "../repositories/customer";
+import { BookRepo } from "../repositories/book";
+import { CreateOrderDto } from "../dto/order.dto";
+import { NotFoundError } from "../utils/api-error";
+import { OrderDetails } from "../entities/orderDetails";
+import { OrderStatus } from "../entities/order";
 
 export const getCustomerOrdersService = async (customerId: string) => {
   return await OrderRepo.find({

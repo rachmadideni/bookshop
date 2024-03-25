@@ -6,8 +6,8 @@ import * as paginate from "express-paginate";
 import swaggerUi from "swagger-ui-express";
 import swaggerOutput from "./swagger_output.json";
 import { dataSource } from "./config/database";
-import appRoutes from "@/controllers/index";
-import ErrorHandler from "@/utils/error-handler";
+import appRoutes from "./controllers";
+import ErrorHandler from "./utils/error-handler";
 
 dataSource.initialize().then(() => {
   console.log("Database connected");

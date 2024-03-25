@@ -3,10 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import {
   getCustomerPoints as getCustomerPointsService,
   updateCustomerPoints as updateCustomerPointService,
-} from "@/services/customer";
-import RequestValidator from "@/utils/request-validator";
-import { BadRequestError } from "@/utils/api-error";
-import { UpdatePointsDto } from "@/dto/customer.dto";
+} from "../services/customer";
+import RequestValidator from "../utils/request-validator";
+import { BadRequestError } from "../utils/api-error";
+import { UpdatePointsDto } from "../dto/customer.dto";
 
 const router = express.Router();
 
