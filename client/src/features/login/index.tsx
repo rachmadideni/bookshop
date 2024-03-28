@@ -6,10 +6,11 @@ import {
 
 import { Button } from "@/components/button";
 
+import useLogin from "@/hooks/useLogin";
+
 type LoginProps = {
   isOpen: boolean;
   openModal?: (evt: React.MouseEvent) => void;
-  onLogin?: (evt: React.MouseEvent) => void;
   onCancel?: (evt: React.MouseEvent) => void;
   triggerComponent?: React.ReactNode;
 };
@@ -17,10 +18,11 @@ type LoginProps = {
 const Login = ({
   isOpen,
   openModal,
-  onLogin,
   onCancel,
   triggerComponent,
 }: LoginProps) => {
+  const loginMutation = useLogin();
+
   return (
     <Dialog open={isOpen}>
       <DialogTrigger asChild>
@@ -48,7 +50,10 @@ const Login = ({
               className="w-full"
               variant="outline"
               type="button"
-              onClick={onLogin}
+              onClick={() => {
+                // todo handle login
+                loginMutation.mutate();
+              }}
             >
               Log in
             </Button>

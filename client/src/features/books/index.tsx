@@ -1,37 +1,43 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Book from "@/components/book";
-import useInfiniteBooks from "@/hooks/useInfiniteBooks";
 import { useInView } from "react-intersection-observer";
 import Skeleton from "react-loading-skeleton";
+import Book from "@/components/book";
+import { type BookProps } from "@/components/book/book.types";
+import type { BookQueryResult, BookDataResponse } from "./index.types";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const Books = () => {
+const Books = ({
+  data,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  status,
+  isFetching,
+}: BookQueryResult) => {
   const router = useRouter();
   const { ref, inView } = useInView();
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    useInfiniteBooks();
 
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if (inView && hasNextPage && !isFetching) {
       fetchNextPage();
     }
   }, [inView, hasNextPage]);
 
-  const books = data?.pages
-    ?.map((page) => page.data)
+  const books = ((data?.pages as BookDataResponse["pages"]) || [])
+    .map((page) => page.data)
     .flat()
-    .map((book, idx) => (
+    .map((book: BookProps, idx: number) => (
       <Book
         key={idx}
-        title={book.title}
-        writer={book.writer}
+        title={book?.title}
+        writer={book?.writer}
         rating={3}
-        price={book.price}
-        coverImage={book.coverImage}
+        price={book?.price}
         onClick={() => router.push(`book/${book.id}`)}
-        // coverImage="https://images-na.ssl-images-amazon.com/images/I/51Ga5GuElyL._AC_SX184_.jpg"
+        tags={book?.tags}
+        coverImage="https://images-na.ssl-images-amazon.com/images/I/51Ga5GuElyL._AC_SX184_.jpg"
       />
     ));
 
@@ -57,8 +63,8 @@ const Books = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-        {books}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-14">
+        {data && books}
         {firstLoad}
         {nextLoad}
       </div>
@@ -68,7 +74,7 @@ const Books = () => {
 };
 
 const SkeletonBox = ({ children }: React.PropsWithChildren<unknown>) => (
-  <div className="flex flex-row aspect-video min-w-72 h-40 rounded-md p-4 gap-8 bg-gray-300/0 hover:shadow-lg hover:cursor-pointer">
+  <div className="flex flex-row aspect-video min-w-72 h-40 rounded-md p-4 gap-8 bg-gray-300/0">
     {children}
   </div>
 );
