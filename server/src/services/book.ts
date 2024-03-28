@@ -1,5 +1,6 @@
 import { ILike } from "typeorm";
 import { BookRepo } from "../repositories/book";
+import { BadRequestError } from "@/utils/api-error";
 
 const getBooks = async (page: string, limit: string) => {
   return await BookRepo.find({
@@ -29,12 +30,42 @@ const getBooksByTagId = async (tagId: string) => {
   });
 };
 
-const getBooksByCategory = async (category: string, keyword: string) => {
-  return await BookRepo.findAndCount({
+const getBooksByCategory = async (
+  category: string,
+  keyword: string,
+  page: string,
+  limit: string
+) => {
+  const validCategoryColumns = BookRepo.metadata.columns
+    .map((column) => column.propertyName)
+    .filter(
+      (columnName) =>
+        columnName !== "id" &&
+        columnName !== "coverImage" &&
+        columnName !== "price"
+    );
+
+  if (category !== "" && typeof category !== "undefined") {
+    if (!validCategoryColumns.includes(category) && category !== "")
+      throw new BadRequestError(
+        `${category} is not a valid category. Please use one of the following (${validCategoryColumns})`,
+        [`${category} is not a valid category`]
+      );
+  }
+
+  const conditions =
+    category !== "" &&
+    typeof category !== "undefined" &&
+    keyword !== "" &&
+    typeof keyword !== "undefined"
+      ? { where: { [category]: ILike(`%${keyword}%`) } }
+      : {};
+
+  return await BookRepo.find({
     relations: ["tags"],
-    where: {
-      [category]: ILike(`%${keyword}%`),
-    },
+    ...conditions,
+    take: parseInt(limit),
+    skip: parseInt(page),
   });
 };
 

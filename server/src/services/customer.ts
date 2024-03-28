@@ -25,8 +25,13 @@ const updateCustomerPoints = async (customerId: string, points: number) => {
 
   return await CustomerRepo.save({
     id: customer.id,
+    name: customer.name,
     points,
   });
 };
 
-export { getCustomers, getCustomerPoints, updateCustomerPoints };
+export {
+  getCustomers,
+  getCustomerPoints as getCustomerPointsService,
+  updateCustomerPoints as updateCustomerPointService,
+};
