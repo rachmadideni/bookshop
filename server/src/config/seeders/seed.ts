@@ -10,4 +10,4 @@ dataSource.initialize().then(async () => {
   await dataSource.synchronize(true);
   await runSeeders(dataSource);
   process.exit();
-});
+}).catch(err => `seed error: ${err}`);
