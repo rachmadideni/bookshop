@@ -1,25 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ShoppingBasket, ArrowLeftIcon } from "lucide-react";
-import Login from "@/features/login";
 import { Button } from "@/components/button";
+import { ConfirmAddItem } from "@/components/cart";
 import useBookDetail from "@/hooks/useBookDetail";
 import { useSelector, useDispatch } from "@/hooks";
-import {
-  userSelector,
-  setOpenLoginModal,
-  login,
-  addPoints,
-} from "@/slices/user";
-import { setNotification } from "@/slices/global";
+import { userSelector, setOpenLoginModal } from "@/slices/user";
 
 const BookDetail = ({ params }: { params: { slug: string } }) => {
   const bookId = params.slug;
   const router = useRouter();
   const { book } = useBookDetail({ bookId });
 
+  const [cartOpen, setCartOpen] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
 
@@ -40,70 +36,50 @@ const BookDetail = ({ params }: { params: { slug: string } }) => {
           <p className="capitalize font-bold text-black text-2xl">back</p>
         </Button>
       </div>
-      <div className="flex flex-row gap-16">
-        <div className="space-y-4">
+      <div className="flex flex-col md:flex-row gap-16">
+        <div className="flex flex-col space-y-4 items-center justify-center">
           <Image
             alt="book cover"
-            src={book?.data.coverImage}
-            className="rounded-md shadow-md w-96 h-80"
+            src={
+              "https://images-na.ssl-images-amazon.com/images/I/51Ga5GuElyL._AC_SX184_.jpg"
+            }
+            className="rounded-md shadow-md w-60 h-72 md:w-72 md:h-96 bg-contain"
             width={150}
             height={120}
+            priority
           />
 
-          <div className="flex w-96 bg-slate-400/0 justify-center">
+          <div className="flex md:w-96 bg-slate-400/0 justify-center">
             <p className="text-2xl text-amber-700 font-bold">
               ${book?.data.price}
             </p>
           </div>
-          <div className="w-96 bg-slate-400/0">
+          <div className="md:w-96 bg-slate-400/0">
             {user.isLogin ? (
-              <Button
-                variant="default"
-                className="font-bold w-full rounded-md capitalize gap-2 bg-green-600 text-white"
-                onClick={() => dispatch(addPoints(40))}
-              >
-                <ShoppingBasket size={20} />
-                add to cart
-              </Button>
-            ) : (
-              <Login
-                isOpen={user.openLoginModal}
-                openModal={() => {
-                  dispatch(setOpenLoginModal(true));
-                }}
-                onLogin={() => {
-                  dispatch(login());
-                  dispatch(
-                    setNotification({
-                      isOpen: true,
-                      message:
-                        "Welcome to Bookshop! 🎉 As our new customer you'll receive 100 bonus points 🎉",
-                    })
-                  );
-
-                  dispatch(addPoints(100));
-                }}
-                onCancel={oncancel}
-                triggerComponent={
-                  <Button
-                    variant="default"
-                    className="font-bold w-full rounded-md capitalize gap-2 bg-green-600 text-white"
-                    onClick={() => {
-                      if (user.isLogin) dispatch(addPoints(50));
-                      dispatch(setOpenLoginModal(true));
-                    }}
-                  >
-                    <ShoppingBasket size={20} />
-                    add to cart
-                  </Button>
-                }
-              />
-            )}
+              <>
+                <ConfirmAddItem
+                  isOpen={cartOpen}
+                  book={book?.data}
+                  toggleDialog={() => {
+                    setCartOpen(false);
+                  }}
+                />
+                <Button
+                  variant="default"
+                  className="font-bold w-full rounded-md capitalize gap-2 bg-green-600 text-white"
+                  onClick={() => {
+                    setCartOpen(true);
+                  }}
+                >
+                  <ShoppingBasket size={20} />
+                  add to cart
+                </Button>
+              </>
+            ) : null}
           </div>
         </div>
 
         <div className="flex flex-col gap-2">
-          {JSON.stringify(user, null, 2)}
           <h1 className="text-4xl text-poppins text-amber-700 font-bold capitalize">
             {book?.data.title}
           </h1>
@@ -127,16 +103,20 @@ const BookDetail = ({ params }: { params: { slug: string } }) => {
             libero laudantium, saepe unde tempore? Id dolore veritatis dolorem
             voluptatum!
           </p>
+          <div className="flex flex-wrap gap-1">
+            {book?.data.tags?.map(
+              (tag: Record<string, string>, tagIndex: number) => (
+                <span
+                  key={tagIndex}
+                  className="text-black text-sm gap-2 px-2 py-1 border-2 border-blue-gray-500  rounded-sm"
+                >
+                  {tag.name}
+                </span>
+              )
+            )}
+          </div>
         </div>
       </div>
-
-      {/* <Book
-        title={book?.data.title}
-        writer={book?.data.writer}
-        coverImage={book?.data.coverImage}
-        price={book?.data.price}
-        rating={3}
-      /> */}
     </div>
   );
 };
