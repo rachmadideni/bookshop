@@ -12,8 +12,50 @@
     }
   ],
   "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "user/customer login",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/customer/{customerId}/points": {
+      "get": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "get customer points",
+        "description": "",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/customer/update-points": {
       "post": {
+        "tags": [
+          "customer"
+        ],
+        "summary": "update customer points",
         "description": "",
         "responses": {
           "200": {
@@ -39,14 +81,28 @@
         }
       }
     },
-    "/book/": {
+    "/book/filter": {
       "get": {
         "tags": [
           "books"
         ],
-        "summary": "Some summary...",
+        "summary": "filter books by category",
         "description": "",
         "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "page",
             "in": "query",
@@ -117,31 +173,35 @@
         }
       }
     },
-    "/book/filter": {
+    "/order/{customerId}/payment": {
       "post": {
         "tags": [
-          "books"
+          "orders"
         ],
-        "summary": "Some summary...",
+        "summary": "make orders payment",
         "description": "",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Customer Id"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "category": {
-                    "example": "any"
-                  },
-                  "keyword": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/paymentSchema"
               }
             }
           }
@@ -197,7 +257,7 @@
         }
       }
     },
-    "/order/{orderId}/cancel": {
+    "/order/{customerId}/cancel": {
       "post": {
         "tags": [
           "orders"
@@ -206,7 +266,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "orderId",
+            "name": "customerId",
             "in": "path",
             "required": true,
             "schema": {
@@ -218,6 +278,16 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/cancelOrderSchema"
+              }
+            }
           }
         }
       }
@@ -263,6 +333,46 @@
         },
         "required": [
           "customerId"
+        ]
+      },
+      "paymentSchema": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "example": 1000
+          },
+          "orderIds": {
+            "type": "array",
+            "example": [
+              "c0bbf765-0157-4575-a2db-dc60e179688b",
+              "c0bbf765-0157-4575-a2db-dc60e179688b"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "amount",
+          "orderIds"
+        ]
+      },
+      "cancelOrderSchema": {
+        "type": "object",
+        "properties": {
+          "orderIds": {
+            "type": "array",
+            "example": [
+              "c0bbf765-0157-4575-a2db-dc60e179688b"
+            ],
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "orderIds"
         ]
       }
     }
