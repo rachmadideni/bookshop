@@ -1,4 +1,5 @@
 import { IsUUID, IsNotEmpty, IsString, IsArray } from "class-validator";
+import { Book } from "@/entities/book";
 
 export class CustomerOrderDto {
   @IsNotEmpty()
@@ -8,10 +9,16 @@ export class CustomerOrderDto {
 }
 
 export class CreateOrderDto {
-  @IsUUID()
+  // @IsUUID()
   @IsNotEmpty()
   customerId: string;
 
   @IsArray()
-  books: string[];
+  books: Book[];
+}
+
+export class MakePaymentDto {
+  amount: number;
+
+  orderIds: string[];
 }
