@@ -1,16 +1,15 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
+import { baseUrl } from "@/lib/config";
 
 type fetchBookDetailProps = {
   bookId: string;
 };
 
 const fetchBookDetail = async ({ bookId }: fetchBookDetailProps) => {
-  const url = `http://localhost:3001/api/book/${bookId}`;
-  const response = await fetch(url, {
-    method: "get",
-  });
+  const url = `${baseUrl}/book/${bookId}/detail`;
+  const response = await fetch(url);
   return await response.json();
 };
 
