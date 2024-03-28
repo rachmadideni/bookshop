@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 import express from "express";
+import cors from "cors";
 import * as bodyParser from "body-parser";
 import * as paginate from "express-paginate";
 import swaggerUi from "swagger-ui-express";
@@ -14,6 +15,7 @@ dataSource.initialize().then(() => {
 });
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
