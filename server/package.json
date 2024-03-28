@@ -2,19 +2,19 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/app.ts",
   "scripts": {
     "dev": "nodemon src/app.ts",
-    "seed": "ts-node src/config/seeders/seed.ts",
+    "build": "tsc",
     "client": "npm start --prefix ../client",
-    "both": "concurrently \"npm run dev\" \"cd ../client && npm run dev\"",
-    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./src -o ./dist",
-    "start": "node dist/app.js"
+    "start": "concurrently \"npm run dev\" \"cd ../client && npm run dev\"",
+    "seed": "ts-node src/config/seeders/seed.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express-paginate": "^1.0.4",
     "@types/swagger-ui-express": "^4.1.6",
     "concurrently": "^8.2.2",
@@ -32,6 +32,7 @@
     "body-parser": "^1.20.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.1",
     "express-paginate": "^1.0.2",
