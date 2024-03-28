@@ -1,48 +1,21 @@
 "use client";
 
-import Link from "next/link";
-import { useSelector, useDispatch } from "@/hooks";
-import {
-  userSelector,
-  login,
-  addPoints,
-  setOpenLoginModal,
-} from "@/slices/user";
-import { setNotification } from "@/slices/global";
-
-import { ShoppingCartIcon } from "lucide-react";
-
-import { AvatarImage, AvatarFallback, Avatar } from "@/components/avatar";
-import {
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuGroup,
-  DropdownMenuContent,
-  DropdownMenu,
-} from "@/components/dropdown-menu";
-import { Button } from "@/components/button";
-
+import { focusManager } from "@tanstack/react-query";
+import { ShoppingCartIcon, NotebookIcon } from "lucide-react";
 import Login from "@/features/login";
+import AvatarDropdown from "@/components/avatar-dropdown";
+import { Button } from "@/components/button";
+import Cart from "@/components/cart";
+import OrderHistory from "@/components/order";
+import { useSelector, useDispatch } from "@/hooks";
+import { userSelector, setOpenLoginModal } from "@/slices/user";
+import { totalItemsSelector, toggleCartOpen } from "@/slices/cart";
+import { toggleDialog } from "@/slices/orders";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector(userSelector);
-
-  const onLogin = (evt: React.MouseEvent) => {
-    evt.preventDefault();
-    dispatch(setOpenLoginModal(false));
-    dispatch(login());
-    dispatch(
-      setNotification({
-        isOpen: true,
-        message:
-          "Welcome to Bookshop! 🎉 As our new customer you'll receive 100 bonus points 🎉",
-      })
-    );
-
-    dispatch(addPoints(100));
-  };
+  const totalItems = useSelector(totalItemsSelector);
 
   const oncancel = (evt: React.MouseEvent) => {
     evt.preventDefault();
@@ -55,64 +28,57 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="flex justify-end w-full gap-0 px-4 bg-slate-400/0">
+    <nav className="flex md:justify-end justify-center w-full gap-0 px-4 bg-slate-400/0">
       <ul className="flex gap-4 items-center">
         <li>
           {user.isLogin ? (
-            <UserAvatar />
+            <AvatarDropdown />
           ) : (
             <Login
               isOpen={user.openLoginModal}
               openModal={onOpenModal}
-              onLogin={onLogin}
               onCancel={oncancel}
             />
           )}
         </li>
         <li>
-          <Button className="text-black font-poppins p-0" onClick={() => {}}>
+          {/* Shopping Cart */}
+          <Button
+            className="relative text-black font-poppins w-10 h-10 p-2 rounded-full hover:bg-slate-100 hover:outline-gray-500 hover:outline-2 hover:outline-offset-2"
+            onClick={() => {
+              if (!user.isLogin) return;
+              dispatch(toggleCartOpen(true));
+            }}
+          >
             <ShoppingCartIcon size={20} />
+            {totalItems > 0 && (
+              <span className="absolute flex items-center justify-center -top-1 -right-2 text-xs font-bold bg-green-600 text-white w-5 h-5 rounded-full">
+                {totalItems}
+              </span>
+            )}
+          </Button>
+        </li>
+        <li>
+          {/* Order History */}
+          <Button
+            onClick={() => {
+              if (!user.isLogin) return;
+              dispatch(toggleDialog(true));
+              focusManager.setFocused(true);
+            }}
+            className="relative text-black font-poppins w-10 h-10 p-2 rounded-full hover:bg-slate-100 hover:outline-gray-500 hover:outline-2 hover:outline-offset-2"
+          >
+            <NotebookIcon size={20} />
           </Button>
         </li>
       </ul>
+      {user.isLogin ? (
+        <>
+          <Cart />
+          <OrderHistory />
+        </>
+      ) : null}
     </nav>
-  );
-};
-
-const UserAvatar = () => {
-  const user = useSelector(userSelector);
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild className="cursor-pointer">
-        <Avatar className="h-9 w-9 cursor-pointer">
-          <AvatarImage
-            alt="Shadcn's avatar"
-            src="https://github.com/shadcn.png"
-          />
-          <AvatarFallback>DR</AvatarFallback>
-        </Avatar>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-44 px-4 py-2 mt-2">
-        <DropdownMenuGroup>
-          <DropdownMenuItem className="flex flex-col justify-start items-start">
-            <p className="text-xs text-black">you&apos;re logged in as</p>
-            <span className="font-bold font-poppins">Denny</span>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="hover:bg-slate-100 rounded-md">
-            <Link className="text-black" href="#">
-              {user.points} Points
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Link className="underline" href="#">
-              Logout
-            </Link>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 };
 
