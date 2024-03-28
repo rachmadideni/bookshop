@@ -3,14 +3,14 @@ import RtkProvider from "@/providers/rtk";
 import QueryProvider from "@/providers/query";
 import { Inter, Poppins } from "next/font/google";
 import store from "@/store";
+import Navbar from "@/components/navbar";
+import SiteTitle from "@/components/site-title";
+import Notification from "@/components/notification";
+import { Toaster } from "@/components/toaster";
 
 import "./globals.css";
 
 import "@smastrom/react-rating/style.css";
-
-import Navbar from "@/components/navbar";
-import SiteTitle from "@/components/site-title";
-import Notification from "@/components/notification";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const poppins = Poppins({
@@ -35,13 +35,26 @@ export default function RootLayout({
       <body suppressHydrationWarning={true}>
         <main className="flex min-h-screen flex-col items-center justify-start p-8 mx-2 md:mx-10 mb-16 gap-16">
           <RtkProvider store={store}>
-            <Navbar />
-            <SiteTitle
-              title="bookshop"
-              slogan="Your Online Destination for Literary Exploration and Inspiration"
+            <Toaster
+              toastOptions={{
+                unstyled: false,
+                classNames: {
+                  description: "inline-block text-red-400",
+                  actionButton: "bg-zinc-400",
+                  cancelButton: "bg-orange-400",
+                  closeButton: "bg-lime-400",
+                },
+              }}
             />
-            <Notification />
-            <QueryProvider>{children}</QueryProvider>
+            <QueryProvider>
+              <Navbar />
+              <SiteTitle
+                title="bookshop"
+                slogan="Your Online Destination for Literary Exploration and Inspiration"
+              />
+              <Notification />
+              {children}
+            </QueryProvider>
           </RtkProvider>
         </main>
       </body>
