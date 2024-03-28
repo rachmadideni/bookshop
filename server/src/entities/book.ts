@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from "typeorm";
 import { Tag } from "./tag";
+import { OrderDetails } from "./orderDetails";
 
 @Entity("book")
 export class Book {
@@ -45,4 +47,7 @@ export class Book {
     },
   })
   tags: Tag[];
+
+  @OneToMany(() => OrderDetails, (orderDetails) => orderDetails.book)
+  details: OrderDetails[];
 }
