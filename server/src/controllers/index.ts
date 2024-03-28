@@ -1,14 +1,20 @@
 import {
   getBookDetail,
-  getBooks,
+  // getBooks,
   getBookByTag,
   filterBooksByCategory,
 } from "./book";
 import { getCustomerPoints, updateCustomerPoints } from "./customer";
-import { getCustomerOrders, createOrder, cancelOrder } from "./order";
+import {
+  getCustomerOrders,
+  createOrder,
+  cancelOrder,
+  makePayment,
+} from "./order";
+import { login } from "./auth";
 
 const appRoutes = [
-  getBooks,
+  // getBooks,
   getBookDetail,
   getBookByTag,
   getCustomerPoints,
@@ -17,6 +23,8 @@ const appRoutes = [
   getCustomerOrders,
   createOrder,
   cancelOrder,
+  // makePayment,
+  login,
 ];
 
 export default appRoutes;

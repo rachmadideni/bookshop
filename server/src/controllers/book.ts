@@ -6,26 +6,40 @@ import {
   getBooksByCategory,
 } from "../services/book";
 
-interface ReqQuery {
+import { StatusCodes } from "http-status-codes";
+import { BadRequestError } from "@/utils/api-error";
+
+interface ReqQuery extends express.Request {
   page: string;
   limit: string;
+  category: string;
+  keyword: string;
 }
 
 const router = express.Router();
 
-const getBooks = router.get(
-  "/book/",
-  async (req: express.Request, res: express.Response) => {
-    // #swagger.tags = ['books']
-    // #swagger.summary = 'Some summary...'
-    const { page, limit } = req.query as unknown as ReqQuery;
-    const books = await getBooksService(page, limit);
+const filterBooksByCategory = router.get(
+  "/book/filter",
+  async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    try {
+      // #swagger.tags = ['books']
+      // #swagger.summary = 'filter books by category'
+      const category = req.query.category as string;
+      const keyword = req.query.keyword as string;
+      const page = req.query.page as string;
+      const limit = req.query.limit as string;
+      const books = await getBooksByCategory(category, keyword, page, limit);
 
-    res.json({
-      message: "Success. returning result for books",
-      data: books,
-      next: page + limit,
-    });
+      res.json({
+        message: "Success. returning result for books by category",
+        data: books,
+        next: parseInt(page) + parseInt(limit),
+      });
+    } catch (err) {}
   }
 );
 
@@ -55,20 +69,4 @@ const getBookByTag = router.get(
   }
 );
 
-const filterBooksByCategory = router.post(
-  "/book/filter",
-  async (req: express.Request, res: express.Response) => {
-    // #swagger.tags = ['books']
-    // #swagger.summary = 'Some summary...'
-    const { category, keyword } = req.body;
-
-    const [books, bookCount] = await getBooksByCategory(category, keyword);
-    res.json({
-      message: "Success. returning result for books by category",
-      data: books,
-      count: bookCount,
-    });
-  }
-);
-
-export { getBooks, getBookDetail, getBookByTag, filterBooksByCategory };
+export { getBookDetail, getBookByTag, filterBooksByCategory };
