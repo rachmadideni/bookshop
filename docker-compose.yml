@@ -1,53 +1,20 @@
 version: '3'
 
 services:
-  
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    container_name: bookshop-client
-    restart: unless-stopped
-    ports:
-      - 3000:3000
-    volumes:
-      - ./client:/app
-
-  server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    container_name: bookshop-server
-    restart: unless-stopped
-    ports:
-      - 3001:3001
-    volumes:
-      - ./server:/app
-    env_file: ./server/.env
-    depends_on:
-      - db
-  
   db:
     image: postgres
     container_name: bookshop-db
     restart: unless-stopped
     env_file: ./server/.env
-    # environment:
-    #   - POSTGRES_USER=${POSTGRES_USER}
-    #   - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    #   - POSTGRES_DB=${POSTGRES_DB}
     ports:
-      - 5432:5432
-      # - ${DB_PORT}:5432
+      - "5432:5432"
     volumes:
       - local_db_data:/var/lib/postgres/
-  # api:
-  #   depends_on:
-  #     - db
-  #   restart: unless-stopped
-  #   ports:
-  #     - ${API_PORT}:3000
-  #   env_file: ./server/.env
+    networks:
+      - bookshop-network
 
 volumes:
   local_db_data: {}
+
+networks:
+  bookshop-network:
