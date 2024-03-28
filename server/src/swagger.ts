@@ -26,12 +26,23 @@ const doc = {
       getOrdersSchema: {
         $customerId: "c0bbf765-0157-4575-a2db-dc60e179688b",
       },
+      paymentSchema: {
+        $amount: 1000,
+        $orderIds: [
+          "c0bbf765-0157-4575-a2db-dc60e179688b",
+          "c0bbf765-0157-4575-a2db-dc60e179688b",
+        ],
+      },
+      cancelOrderSchema: {
+        $orderIds: ["c0bbf765-0157-4575-a2db-dc60e179688b"],
+      },
     },
   },
 };
 
 const outputFile = "./swagger_output.json";
 const endpointsFiles = [
+  "./src/controllers/auth.ts",
   "./src/controllers/customer.ts",
   "./src/controllers/book.ts",
   "./src/controllers/order.ts",
