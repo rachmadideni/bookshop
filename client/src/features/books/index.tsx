@@ -23,7 +23,7 @@ const Books = ({
     if (inView && hasNextPage && !isFetching) {
       fetchNextPage();
     }
-  }, [inView, hasNextPage]);
+  }, [inView, hasNextPage, isFetching, fetchNextPage]);
 
   const books = ((data?.pages as BookDataResponse["pages"]) || [])
     .map((page) => page.data)
@@ -49,7 +49,7 @@ const Books = ({
         key={idx}
         duration={2.5}
         wrapper={SkeletonBox}
-        className="min-w-72 h-40 gap-8"
+        className="min-w-64 h-40 gap-8"
       />
     ));
 

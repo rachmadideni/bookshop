@@ -81,7 +81,7 @@ const OrderHistory = () => {
       // always fetch fresh orders data
       queryClient.invalidateQueries({ queryKey: ["getOrders"] });
     }
-  }, []);
+  }, [isDialogOpen, queryClient]);
 
   if (orders.isLoading) {
     return <div>Loading ...</div>;

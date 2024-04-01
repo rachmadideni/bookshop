@@ -1,7 +1,7 @@
 import type { UseInfiniteQueryResult } from "@tanstack/react-query";
 import { type BookProps } from "@/components/book/book.types";
 
-export type BookDataResponse {
+export type BookDataResponse = {
   pages?: { data: BookProps[] }[];
 }
 

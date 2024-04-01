@@ -37,7 +37,7 @@ const Notification = ({ closeTimeout = 5000 }: NotificationProps) => {
     }, closeTimeout);
 
     return () => clearTimeout(timer);
-  }, [isOpen]);
+  }, [isOpen, closeTimeout, dispatch]);
 
   if (!isOpen) return null;
   return (

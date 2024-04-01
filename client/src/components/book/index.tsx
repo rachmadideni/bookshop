@@ -1,18 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Rating from "@/components/rating";
 import { type BookProps } from "./book.types";
-
-// export type BookProps = {
-//   id?: string;
-//   title: string;
-//   writer: string;
-//   coverImage: string;
-//   rating: number;
-//   price: number;
-//   onClick?: () => void;
-//   tags: { name: string }[];
-// };
 
 export const Book = (props: BookProps) => {
   return (
@@ -21,10 +11,12 @@ export const Book = (props: BookProps) => {
       className="flex flex-row items-start justify-start aspect-video min-w-72 h-48 rounded-md p-4 gap-6 cursor-pointer"
     >
       <div>
-        <img
+        <Image
           alt="cover image"
           src={props.coverImage}
           className="block bg-cover bg-center aspect-square rounded-md w-24 min-w-24 h-28"
+          width={96}
+          height={112}
         />
       </div>
       <div className="flex flex-col space-y-2 ">
