@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3001/api",
+      "url": "https://bookshop-api-tg3r.onrender.com/api",
       "description": ""
     }
   ],
