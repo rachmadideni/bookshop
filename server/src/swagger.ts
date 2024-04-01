@@ -7,7 +7,7 @@ const doc = {
   },
   servers: [
     {
-      url: "http://localhost:3001/api",
+      url: process.env.API_DOMAIN,
       description: "",
     },
   ],
