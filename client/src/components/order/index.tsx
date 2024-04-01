@@ -37,12 +37,27 @@ const OrderHistory = () => {
   const makePayment = useMakePayment();
   const queryClient = useQueryClient();
 
+  type BookDetailProps = {
+    price: string;
+    title: string;
+    writer: string;
+  };
+
+  type BookProps = {
+    book: BookDetailProps;
+  };
+
+  type orderProps = {
+    id: string;
+    orderDetails: BookProps[];
+  };
+
   const getTotal = () => {
     return (
-      orders?.data?.data?.reduce((acc, order) => {
+      orders?.data?.data?.reduce((acc: number, order: orderProps) => {
         return (
           acc +
-          order?.orderDetails.reduce((orderAcc, detail) => {
+          order?.orderDetails.reduce((orderAcc: number, detail: BookProps) => {
             return orderAcc + parseInt(detail.book.price);
           }, 0)
         );
@@ -52,8 +67,8 @@ const OrderHistory = () => {
 
   const handleOrderIds = (orderId: string) => {
     const amount = orders?.data?.data
-      ?.find((order) => order.id === orderId)
-      .orderDetails.reduce((orderAcc, detail) => {
+      ?.find((order: orderProps) => order.id === orderId)
+      .orderDetails.reduce((orderAcc: number, detail: BookProps) => {
         return orderAcc + parseInt(detail.book.price);
       }, 0);
 
@@ -81,7 +96,7 @@ const OrderHistory = () => {
       // always fetch fresh orders data
       queryClient.invalidateQueries({ queryKey: ["getOrders"] });
     }
-  }, []);
+  }, [isDialogOpen, queryClient]);
 
   if (orders.isLoading) {
     return <div>Loading ...</div>;
@@ -111,7 +126,7 @@ const OrderHistory = () => {
         )}
         <div className="flex flex-col gap-4 max-w-lg justify-start overflow-y-scroll bg-slate-400/0">
           {orders?.data?.data?.length > 0 &&
-            orders?.data?.data?.map((order, idx: number) => (
+            orders?.data?.data?.map((order: orderProps, idx: number) => (
               <div key={idx} className="flex flex-col w-full space-y-2">
                 <div className="flex mb-1 items-center justify-between px-2">
                   <p className="text-sm text-black font-semibold">
@@ -127,7 +142,7 @@ const OrderHistory = () => {
                   </Button>
                 </div>
 
-                {order?.orderDetails.map((detail, idx: number) => (
+                {order?.orderDetails.map((detail: BookProps, idx: number) => (
                   <div
                     key={idx}
                     className={cn(
