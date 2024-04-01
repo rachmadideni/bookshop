@@ -7,7 +7,7 @@ import {
 } from "../services/book";
 
 import { StatusCodes } from "http-status-codes";
-import { BadRequestError } from "@/utils/api-error";
+import { BadRequestError } from "../utils/api-error";
 
 interface ReqQuery extends express.Request {
   page: string;

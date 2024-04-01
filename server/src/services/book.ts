@@ -1,6 +1,6 @@
 import { ILike } from "typeorm";
 import { BookRepo } from "../repositories/book";
-import { BadRequestError } from "@/utils/api-error";
+import { BadRequestError } from "../utils/api-error";
 
 const getBooks = async (page: string, limit: string) => {
   return await BookRepo.find({
