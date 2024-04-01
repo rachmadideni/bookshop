@@ -10,7 +10,8 @@
     "start": "concurrently \"npm run dev\" \"cd ../client && npm run dev\"",
     "seed": "ts-node src/config/seeders/seed.ts",
     "prod": " node dist/app.js",
-    "start:prod": "npm run seed && tsc && node dist/app.js"
+    "start:prod": "npm run seed && tsc && node dist/app.js",
+    "build:swagger": "npx ts-node src/swagger.ts"
   },
   "keywords": [],
   "author": "",
